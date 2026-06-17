@@ -7,19 +7,28 @@ const priceLists = [
     id: "csm",
     brand: "CSM",
     file: "/csm-pricelist.pdf",
-    color: "#1d4ed8",
+    color: "#1a1a1a",
+    stripColor: "#4b5563",
+    iconBg: "#f3f4f6",
+    iconStroke: "#1a1a1a",
   },
   {
     id: "hyundai",
     brand: "Hyundai",
     file: "/hyundai-pricelist.pdf",
-    color: "#0369a1",
+    color: "#002C5F",
+    stripColor: "#002C5F",
+    iconBg: "#e8eef5",
+    iconStroke: "#002C5F",
   },
   {
     id: "jetour",
     brand: "Jetour",
     file: "/jetour-pricelist.pdf",
-    color: "#065f46",
+    color: "#111111",
+    stripColor: "#111111",
+    iconBg: "#f9fafb",
+    iconStroke: "#111111",
   },
 ];
 
@@ -42,30 +51,24 @@ function Card({ item }: { item: (typeof priceLists)[0] }) {
   };
 
   return (
-    <div
-      className="rounded-2xl overflow-hidden shadow-lg border border-gray-200 bg-white"
-    >
+    <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-200 bg-white">
       {/* Top colour strip */}
-      <div
-        className="h-3 w-full"
-        style={{ background: item.color }}
-      />
+      <div className="h-3 w-full" style={{ background: item.stripColor }} />
 
       <div className="p-5 flex items-center justify-between gap-4">
         {/* Left: icon + brand */}
         <div className="flex items-center gap-3">
           <div
             className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-            style={{ background: item.color + "18" }}
+            style={{ background: item.iconBg }}
           >
-            {/* PDF icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="26"
               height="26"
               viewBox="0 0 24 24"
               fill="none"
-              stroke={item.color}
+              stroke={item.iconStroke}
               strokeWidth="1.8"
               strokeLinecap="round"
               strokeLinejoin="round"
