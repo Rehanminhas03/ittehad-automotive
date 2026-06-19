@@ -52,8 +52,8 @@ const brands: Brand[] = [
     stripColor: "#111111",
     iconBg: "#f4f4f4",
     brochures: [
-      { label: "Karachi Dashing", file: "/Jetour-Karachi-Dashing-Brochure.pdf" },
-      { label: "X70 Plus 2025", file: "/Jetour-X70-Plus-2025-PK.pdf" },
+      { label: "Dashing", file: "/Jetour-Karachi-Dashing-Brochure.pdf" },
+      { label: "X70 Plus", file: "/Jetour-X70-Plus-2025-PK.pdf" },
     ],
   },
 ];
