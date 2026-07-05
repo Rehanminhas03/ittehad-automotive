@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-interface Brochure {
+interface Doc {
   label: string;
   file: string;
 }
@@ -14,7 +14,8 @@ interface Brand {
   color: string;
   stripColor: string;
   iconBg: string;
-  brochures: Brochure[];
+  brochures: Doc[];
+  emiPlans: Doc[];
 }
 
 const brands: Brand[] = [
@@ -26,6 +27,7 @@ const brands: Brand[] = [
     stripColor: "#4b5563",
     iconBg: "#f3f4f6",
     brochures: [],
+    emiPlans: [],
   },
   {
     id: "hyundai",
@@ -43,6 +45,14 @@ const brands: Brand[] = [
       { label: "Santa Fe TM", file: "/Santa-Fe-TM-Brochure.pdf" },
       { label: "Sonata 2.0", file: "/Sonata-2.0.pdf" },
     ],
+    emiPlans: [
+      { label: "EMI Plan 1", file: "/hyundai-emi-plan-1.pdf" },
+      { label: "EMI Plan 2", file: "/hyundai-emi-plan-2.pdf" },
+      { label: "EMI Plan 3", file: "/hyundai-emi-plan-3.pdf" },
+      { label: "EMI Plan 4", file: "/hyundai-emi-plan-4.pdf" },
+      { label: "EMI Plan 5", file: "/hyundai-emi-plan-5.pdf" },
+      { label: "EMI Plan 6", file: "/hyundai-emi-plan-6.pdf" },
+    ],
   },
   {
     id: "jetour",
@@ -55,10 +65,11 @@ const brands: Brand[] = [
       { label: "Dashing", file: "/Jetour-Karachi-Dashing-Brochure.pdf" },
       { label: "X70 Plus", file: "/Jetour-X70-Plus-2025-PK.pdf" },
     ],
+    emiPlans: [],
   },
 ];
 
-/* ── Reusable icons ─────────────────────────────────────── */
+/* ── Icons ──────────────────────────────────────────────── */
 
 function IconPDF({ stroke }: { stroke: string }) {
   return (
@@ -112,11 +123,10 @@ function IconChevron({ open }: { open: boolean }) {
   );
 }
 
-/* ── Download helper ────────────────────────────────────── */
+/* ── Download hook ──────────────────────────────────────── */
 
 function useDownload() {
   const [loading, setLoading] = useState<string | null>(null);
-
   const download = (file: string, filename: string) => {
     setLoading(file);
     const a = document.createElement("a");
@@ -127,39 +137,27 @@ function useDownload() {
     document.body.removeChild(a);
     setTimeout(() => setLoading(null), 1800);
   };
-
   return { loading, download };
 }
 
-/* ── Action buttons pair ────────────────────────────────── */
+/* ── Action buttons ─────────────────────────────────────── */
 
 function ActionButtons({
-  file,
-  filename,
-  color,
-  loading,
-  onDownload,
-  size = "md",
+  file, filename, color, loading, onDownload, size = "md",
 }: {
-  file: string;
-  filename: string;
-  color: string;
-  loading: string | null;
-  onDownload: (file: string, filename: string) => void;
+  file: string; filename: string; color: string;
+  loading: string | null; onDownload: (f: string, n: string) => void;
   size?: "sm" | "md";
 }) {
-  const isSm = size === "sm";
-  const px = isSm ? "px-2.5 py-1.5" : "px-3 py-2";
-  const text = isSm ? "text-xs" : "text-sm";
-
+  const px = size === "sm" ? "px-2.5 py-1.5" : "px-3 py-2";
+  const text = size === "sm" ? "text-xs" : "text-sm";
   return (
     <div className="flex gap-2 flex-shrink-0">
       <button
         onClick={() => window.open(file, "_blank", "noopener,noreferrer")}
         className={`flex items-center gap-1 ${px} ${text} rounded-lg border-2 border-gray-200 text-gray-600 font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all cursor-pointer`}
       >
-        <IconEye />
-        View
+        <IconEye />View
       </button>
       <button
         onClick={() => onDownload(file, filename)}
@@ -173,13 +171,69 @@ function ActionButtons({
   );
 }
 
+/* ── Expandable doc list ─────────────────────────────────── */
+
+function DocSection({
+  title, icon, docs, color, iconBg, loading, onDownload,
+}: {
+  title: string; icon: React.ReactNode; docs: Doc[];
+  color: string; iconBg: string;
+  loading: string | null; onDownload: (f: string, n: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  if (docs.length === 0) return null;
+  return (
+    <>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-4 py-2.5 border-t border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
+        style={{ color }}
+      >
+        <span className="text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+          {icon}
+          {title}
+          <span className="bg-gray-100 text-gray-500 rounded-full px-2 py-0.5 text-[10px] font-bold">
+            {docs.length}
+          </span>
+        </span>
+        <IconChevron open={open} />
+      </button>
+
+      {open && (
+        <div className="border-t border-gray-100 divide-y divide-gray-50">
+          {docs.map((d) => (
+            <div
+              key={d.file}
+              className="flex items-center justify-between gap-3 px-4 py-3"
+              style={{ background: iconBg + "60" }}
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={{ background: color + "15" }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                    fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                  </svg>
+                </div>
+                <span className="text-sm font-semibold text-gray-700 truncate">{d.label}</span>
+              </div>
+              <ActionButtons
+                file={d.file} filename={d.file.replace("/", "")}
+                color={color} loading={loading} onDownload={onDownload} size="sm"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
 /* ── Brand card ─────────────────────────────────────────── */
 
 function BrandCard({ brand }: { brand: Brand }) {
-  const [open, setOpen] = useState(false);
   const { loading, download } = useDownload();
-
-  const hasBrochures = brand.brochures.length > 0;
 
   return (
     <div className="rounded-2xl overflow-hidden shadow-md border border-gray-200 bg-white">
@@ -202,74 +256,45 @@ function BrandCard({ brand }: { brand: Brand }) {
             </h2>
           </div>
         </div>
-
         <ActionButtons
-          file={brand.priceFile}
-          filename={`${brand.id}-pricelist.pdf`}
-          color={brand.color}
-          loading={loading}
-          onDownload={download}
+          file={brand.priceFile} filename={`${brand.id}-pricelist.pdf`}
+          color={brand.color} loading={loading} onDownload={download}
         />
       </div>
 
-      {/* Brochures section */}
-      {hasBrochures && (
-        <>
-          {/* Toggle row */}
-          <button
-            onClick={() => setOpen((v) => !v)}
-            className="w-full flex items-center justify-between px-4 py-2.5 border-t border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
-            style={{ color: brand.color }}
-          >
-            <span className="text-xs font-bold uppercase tracking-widest flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-              </svg>
-              Brochures
-              <span className="bg-gray-100 text-gray-500 rounded-full px-2 py-0.5 text-[10px] font-bold">
-                {brand.brochures.length}
-              </span>
-            </span>
-            <IconChevron open={open} />
-          </button>
+      {/* Brochures */}
+      <DocSection
+        title="Brochures"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+          </svg>
+        }
+        docs={brand.brochures}
+        color={brand.color}
+        iconBg={brand.iconBg}
+        loading={loading}
+        onDownload={download}
+      />
 
-          {/* Brochure list */}
-          {open && (
-            <div className="border-t border-gray-100 divide-y divide-gray-50">
-              {brand.brochures.map((b) => (
-                <div
-                  key={b.file}
-                  className="flex items-center justify-between gap-3 px-4 py-3"
-                  style={{ background: brand.iconBg + "60" }}
-                >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                      style={{ background: brand.color + "15" }}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                        fill="none" stroke={brand.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                      </svg>
-                    </div>
-                    <span className="text-sm font-semibold text-gray-700 truncate">{b.label}</span>
-                  </div>
-
-                  <ActionButtons
-                    file={b.file}
-                    filename={b.file.replace("/", "")}
-                    color={brand.color}
-                    loading={loading}
-                    onDownload={download}
-                    size="sm"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </>
-      )}
+      {/* EMI Plans */}
+      <DocSection
+        title="EMI Plans"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2" />
+            <line x1="2" y1="10" x2="22" y2="10" />
+          </svg>
+        }
+        docs={brand.emiPlans}
+        color={brand.color}
+        iconBg={brand.iconBg}
+        loading={loading}
+        onDownload={download}
+      />
     </div>
   );
 }
@@ -280,17 +305,14 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-start justify-center px-4 py-10">
       <div className="w-full max-w-lg">
-        {/* Title */}
         <div className="text-center mb-7">
           <h1 className="text-2xl font-extrabold text-gray-800 tracking-tight">
             Ittehad Automotive
           </h1>
           <p className="text-gray-400 text-sm mt-1">
-            View or download price lists &amp; brochures
+            View or download price lists, brochures &amp; EMI plans
           </p>
         </div>
-
-        {/* Brand cards */}
         <div className="flex flex-col gap-4">
           {brands.map((b) => (
             <BrandCard key={b.id} brand={b} />
