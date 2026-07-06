@@ -67,6 +67,18 @@ const brands: Brand[] = [
     ],
     emiPlans: [],
   },
+  {
+    id: "t2-idm",
+    brand: "T2 i-DM PHEV",
+    priceFile: "/t2-idm.pdf",
+    color: "#7c3aed",
+    stripColor: "#7c3aed",
+    iconBg: "#f3f0ff",
+    brochures: [
+      { label: "T2 i-DM Brochure", file: "/Jetour_T2_Brochure_Enhanced.pdf" },
+    ],
+    emiPlans: [],
+  },
 ];
 
 /* ── Icons ──────────────────────────────────────────────── */
