@@ -76,7 +76,6 @@ const brands: Brand[] = [
     iconBg: "#f3f0ff",
     brochures: [
       { label: "T2 i-DM Brochure", file: "/Jetour_T2_Brochure_Enhanced.pdf" },
-      { label: "T2 i-DM", file: "/T2-idm.pdf" },
     ],
     emiPlans: [],
   },
