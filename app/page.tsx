@@ -321,7 +321,11 @@ export default function Home() {
           <h1 className="text-2xl font-extrabold text-gray-800 tracking-tight">
             Ittehad Automotive
           </h1>
-          <p className="text-gray-400 text-sm mt-1">
+          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mt-1">
+            An Ittehad Steel Company
+          </p>
+          <div className="w-10 h-0.5 bg-gray-300 mx-auto mt-2 rounded-full" />
+          <p className="text-gray-400 text-sm mt-2">
             View or download price lists, brochures &amp; EMI plans
           </p>
         </div>
