@@ -26,7 +26,9 @@ const brands: Brand[] = [
     color: "#1a1a1a",
     stripColor: "#4b5563",
     iconBg: "#f3f4f6",
-    brochures: [],
+    brochures: [
+      { label: "EV3 Brochure", file: "/CSM-EV3-Brochure.pdf" },
+    ],
     emiPlans: [],
   },
   {
