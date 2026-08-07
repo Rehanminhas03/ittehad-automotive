@@ -1,11 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 interface Doc {
   label: string;
   file: string;
 }
+
+const promotions: Doc[] = [
+  { label: "Promotion 1", file: "/promotion/promo-1.jpeg" },
+  { label: "Promotion 2", file: "/promotion/promo-2.jpeg" },
+  { label: "Promotion 3", file: "/promotion/promo-3.jpeg" },
+  { label: "Promotion 4", file: "/promotion/promo-4.jpeg" },
+];
+
+const PROMO_COLOR = "#dc2626";
 
 interface Brand {
   id: string;
@@ -89,6 +99,16 @@ const brands: Brand[] = [
     brochures: [
       { label: "T2 i-DM Brochure", file: "/Jetour_T2_Brochure_Enhanced.pdf" },
     ],
+    emiPlans: [],
+  },
+  {
+    id: "ppf",
+    brand: "PPF",
+    priceFile: "/ppf.pdf",
+    color: "#0f766e",
+    stripColor: "#0f766e",
+    iconBg: "#f0fdfa",
+    brochures: [],
     emiPlans: [],
   },
 ];
@@ -254,6 +274,81 @@ function DocSection({
   );
 }
 
+/* ── Promotion card ─────────────────────────────────────── */
+
+function IconTag() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+      fill="none" stroke={PROMO_COLOR} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+      <line x1="7" y1="7" x2="7.01" y2="7" />
+    </svg>
+  );
+}
+
+function PromotionCard() {
+  const { loading, download } = useDownload();
+
+  return (
+    <div className="rounded-2xl overflow-hidden shadow-md border border-gray-200 bg-white">
+      {/* Colour strip */}
+      <div className="h-3 w-full" style={{ background: PROMO_COLOR }} />
+
+      {/* Header */}
+      <div className="px-4 pt-4 pb-3 flex items-center gap-3">
+        <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+          style={{ background: "#fef2f2" }}>
+          <IconTag />
+        </div>
+        <div className="min-w-0">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 leading-none mb-0.5">
+            Latest Offers
+          </p>
+          <h2 className="text-lg font-extrabold leading-tight truncate" style={{ color: PROMO_COLOR }}>
+            Promotion
+          </h2>
+        </div>
+        <span className="ml-auto flex-shrink-0 bg-gray-100 text-gray-500 rounded-full px-2 py-0.5 text-[10px] font-bold">
+          {promotions.length}
+        </span>
+      </div>
+
+      {/* Image grid — all promos share a 4:5 ratio, so nothing gets cropped */}
+      <div className="grid grid-cols-2 gap-3 px-4 pb-4">
+        {promotions.map((p, i) => (
+          <div key={p.file} className="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
+            <a
+              href={p.file}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View ${p.label} full size`}
+              className="block relative aspect-[4/5]"
+            >
+              <Image
+                src={p.file}
+                alt={p.label}
+                fill
+                sizes="(max-width: 640px) 45vw, 240px"
+                priority={i === 0}
+                className="object-cover"
+              />
+            </a>
+            <button
+              onClick={() => download(p.file, p.file.split("/").pop() ?? p.label)}
+              disabled={loading === p.file}
+              aria-label={`Download ${p.label}`}
+              className="absolute top-2 right-2 w-8 h-8 rounded-lg flex items-center justify-center text-white shadow-md transition-all cursor-pointer disabled:opacity-60"
+              style={{ background: loading === p.file ? "#9ca3af" : PROMO_COLOR }}
+            >
+              {loading === p.file ? <IconSpin /> : <IconDownload />}
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ── Brand card ─────────────────────────────────────────── */
 
 function BrandCard({ brand }: { brand: Brand }) {
@@ -338,10 +433,11 @@ export default function Home() {
           </p>
           <div className="w-10 h-0.5 bg-gray-300 mx-auto mt-2 rounded-full" />
           <p className="text-gray-400 text-sm mt-2">
-            View or download price lists, brochures &amp; EMI plans
+            View or download promotions, price lists, brochures &amp; EMI plans
           </p>
         </div>
         <div className="flex flex-col gap-4">
+          <PromotionCard />
           {brands.map((b) => (
             <BrandCard key={b.id} brand={b} />
           ))}
