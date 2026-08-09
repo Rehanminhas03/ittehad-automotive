@@ -26,6 +26,7 @@ interface Brand {
   iconBg: string;
   brochures: Doc[];
   emiPlans: Doc[];
+  brandPriceLists?: Doc[];
 }
 
 const brands: Brand[] = [
@@ -110,6 +111,11 @@ const brands: Brand[] = [
     iconBg: "#f0fdfa",
     brochures: [],
     emiPlans: [],
+    brandPriceLists: [
+      { label: "CSM", file: "/csm-ppf.pdf" },
+      { label: "Hyundai", file: "/hyundai-ppf.pdf" },
+      { label: "Jetour", file: "/jetour-ppf.pdf" },
+    ],
   },
 ];
 
@@ -380,6 +386,22 @@ function BrandCard({ brand }: { brand: Brand }) {
           color={brand.color} loading={loading} onDownload={download}
         />
       </div>
+
+      {/* Brand-specific price lists */}
+      <DocSection
+        title="Brand Price Lists"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+        }
+        docs={brand.brandPriceLists ?? []}
+        color={brand.color}
+        iconBg={brand.iconBg}
+        loading={loading}
+        onDownload={download}
+      />
 
       {/* Brochures */}
       <DocSection
