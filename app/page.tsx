@@ -20,7 +20,7 @@ const PROMO_COLOR = "#dc2626";
 interface Brand {
   id: string;
   brand: string;
-  priceFile: string;
+  priceFile?: string;
   color: string;
   stripColor: string;
   iconBg: string;
@@ -87,6 +87,17 @@ const brands: Brand[] = [
     brochures: [
       { label: "Dashing", file: "/Jetour-Karachi-Dashing-Brochure.pdf" },
       { label: "X70 Plus", file: "/Jetour-X70-Plus-2025-PK.pdf" },
+    ],
+    emiPlans: [],
+  },
+  {
+    id: "t1",
+    brand: "Jetour T1",
+    color: "#ea580c",
+    stripColor: "#ea580c",
+    iconBg: "#fff7ed",
+    brochures: [
+      { label: "T1 Folded Flyer", file: "/t1-folded-flyer.pdf" },
     ],
     emiPlans: [],
   },
@@ -374,17 +385,19 @@ function BrandCard({ brand }: { brand: Brand }) {
           </div>
           <div className="min-w-0">
             <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 leading-none mb-0.5">
-              Price List
+              {brand.priceFile ? "Price List" : "Brochure"}
             </p>
             <h2 className="text-lg font-extrabold leading-tight truncate" style={{ color: brand.color }}>
               {brand.brand}
             </h2>
           </div>
         </div>
-        <ActionButtons
-          file={brand.priceFile} filename={`${brand.id}-pricelist.pdf`}
-          color={brand.color} loading={loading} onDownload={download}
-        />
+        {brand.priceFile && (
+          <ActionButtons
+            file={brand.priceFile} filename={`${brand.id}-pricelist.pdf`}
+            color={brand.color} loading={loading} onDownload={download}
+          />
+        )}
       </div>
 
       {/* Brand-specific price lists */}
