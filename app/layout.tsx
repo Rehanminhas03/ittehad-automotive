@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Ittehad Automotive",
-  description: "Official price lists for CSM, Hyundai, and Jetour vehicles",
+  description: "Official price lists and brochures for CSM, Hyundai, Jetour, and T1 vehicles",
 };
 
 export default function RootLayout({

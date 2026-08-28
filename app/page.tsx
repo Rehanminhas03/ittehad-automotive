@@ -103,6 +103,18 @@ const brands: Brand[] = [
     emiPlans: [],
   },
   {
+    id: "t1",
+    brand: "T1",
+    priceFile: "/t1-pricelist.pdf",
+    color: "#2563eb",
+    stripColor: "#2563eb",
+    iconBg: "#eff6ff",
+    brochures: [
+      { label: "T1 Brochure", file: "/t1-brochure.pdf" },
+    ],
+    emiPlans: [],
+  },
+  {
     id: "ppf",
     brand: "PPF",
     priceFile: "/ppf.pdf",
