@@ -6,6 +6,8 @@ import Image from "next/image";
 interface Doc {
   label: string;
   file: string;
+  /** Optional second line — e.g. tenure and down-payment for an EMI plan. */
+  sub?: string;
 }
 
 const promotions: Doc[] = [
@@ -20,7 +22,7 @@ const PROMO_COLOR = "#dc2626";
 interface Brand {
   id: string;
   brand: string;
-  priceFile: string;
+  priceFile?: string;
   color: string;
   stripColor: string;
   iconBg: string;
@@ -69,12 +71,12 @@ const brands: Brand[] = [
       { label: "Sonata 2.0", file: "/Sonata-2.0.pdf" },
     ],
     emiPlans: [
-      { label: "EMI Plan 1", file: "/hyundai-emi-plan-1.pdf" },
-      { label: "EMI Plan 2", file: "/hyundai-emi-plan-2.pdf" },
-      { label: "EMI Plan 3", file: "/hyundai-emi-plan-3.pdf" },
-      { label: "EMI Plan 4", file: "/hyundai-emi-plan-4.pdf" },
-      { label: "EMI Plan 5", file: "/hyundai-emi-plan-5.pdf" },
-      { label: "EMI Plan 6", file: "/hyundai-emi-plan-6.pdf" },
+      { label: "Elantra Hybrid", sub: "18 months · 40% down", file: "/hyundai-emi-elantra-hybrid-18m.pdf" },
+      { label: "Elantra Hybrid", sub: "24 months · 60% down", file: "/hyundai-emi-elantra-hybrid-24m.pdf" },
+      { label: "Tucson FWD", sub: "18 & 24 months · 50% down", file: "/hyundai-emi-tucson-fwd.pdf" },
+      { label: "Tucson AWD", sub: "18 months · 50% down", file: "/hyundai-emi-tucson-awd.pdf" },
+      { label: "Santa Fe FWD", sub: "18 months · 45% down", file: "/hyundai-emi-santa-fe-fwd.pdf" },
+      { label: "Santa Fe AWD", sub: "18 & 24 months · 45% down", file: "/hyundai-emi-santa-fe-awd.pdf" },
     ],
   },
   {
@@ -91,6 +93,18 @@ const brands: Brand[] = [
     emiPlans: [],
   },
   {
+    id: "t1",
+    brand: "Jetour T1",
+    priceFile: "/t1-pricelist.pdf",
+    color: "#ea580c",
+    stripColor: "#ea580c",
+    iconBg: "#fff7ed",
+    brochures: [
+      { label: "T1 Folded Flyer", file: "/t1-folded-flyer.pdf" },
+    ],
+    emiPlans: [],
+  },
+  {
     id: "t2-idm",
     brand: "T2 i-DM PHEV",
     priceFile: "/t2-idm.pdf",
@@ -99,18 +113,6 @@ const brands: Brand[] = [
     iconBg: "#f3f0ff",
     brochures: [
       { label: "T2 i-DM Brochure", file: "/Jetour_T2_Brochure_Enhanced.pdf" },
-    ],
-    emiPlans: [],
-  },
-  {
-    id: "t1",
-    brand: "T1",
-    priceFile: "/t1-pricelist.pdf",
-    color: "#2563eb",
-    stripColor: "#2563eb",
-    iconBg: "#eff6ff",
-    brochures: [
-      { label: "T1 Brochure", file: "/t1-brochure.pdf" },
     ],
     emiPlans: [],
   },
@@ -205,18 +207,20 @@ function useDownload() {
 /* ── Action buttons ─────────────────────────────────────── */
 
 function ActionButtons({
-  file, filename, color, loading, onDownload, size = "md",
+  file, filename, label, color, loading, onDownload, size = "md",
 }: {
-  file: string; filename: string; color: string;
+  file: string; filename: string; label: string; color: string;
   loading: string | null; onDownload: (f: string, n: string) => void;
   size?: "sm" | "md";
 }) {
-  const px = size === "sm" ? "px-2.5 py-1.5" : "px-3 py-2";
-  const text = size === "sm" ? "text-xs" : "text-sm";
+  // The "md" size stays compact on phones and only grows once there is room.
+  const px = size === "sm" ? "px-2.5 py-1.5" : "px-2.5 py-1.5 sm:px-3 sm:py-2";
+  const text = size === "sm" ? "text-xs" : "text-xs sm:text-sm";
   return (
     <div className="flex gap-2 flex-shrink-0">
       <button
         onClick={() => window.open(file, "_blank", "noopener,noreferrer")}
+        aria-label={`View ${label}`}
         className={`flex items-center gap-1 ${px} ${text} rounded-lg border-2 border-gray-200 text-gray-600 font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all cursor-pointer`}
       >
         <IconEye />View
@@ -224,6 +228,7 @@ function ActionButtons({
       <button
         onClick={() => onDownload(file, filename)}
         disabled={loading === file}
+        aria-label={`Download ${label}`}
         className={`flex items-center gap-1 ${px} ${text} rounded-lg text-white font-semibold transition-all cursor-pointer disabled:opacity-60`}
         style={{ background: loading === file ? "#9ca3af" : color }}
       >
@@ -248,6 +253,7 @@ function DocSection({
     <>
       <button
         onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
         className="w-full flex items-center justify-between px-4 py-2.5 border-t border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
         style={{ color }}
       >
@@ -266,10 +272,10 @@ function DocSection({
           {docs.map((d) => (
             <div
               key={d.file}
-              className="flex items-center justify-between gap-3 px-4 py-3"
+              className="flex flex-wrap items-center gap-x-3 gap-y-2.5 px-4 py-3"
               style={{ background: iconBg + "60" }}
             >
-              <div className="flex items-center gap-2.5 min-w-0">
+              <div className="flex items-center gap-2.5 flex-1 min-w-[8.5rem]">
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
                   style={{ background: color + "15" }}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
@@ -278,12 +284,20 @@ function DocSection({
                     <polyline points="14 2 14 8 20 8" />
                   </svg>
                 </div>
-                <span className="text-sm font-semibold text-gray-700 truncate">{d.label}</span>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-gray-700 leading-tight break-words">{d.label}</p>
+                  {d.sub && (
+                    <p className="text-[11px] text-gray-500 leading-snug mt-0.5 break-words">{d.sub}</p>
+                  )}
+                </div>
               </div>
-              <ActionButtons
-                file={d.file} filename={d.file.replace("/", "")}
-                color={color} loading={loading} onDownload={onDownload} size="sm"
-              />
+              <div className="ml-auto flex-shrink-0">
+                <ActionButtons
+                  file={d.file} filename={d.file.split("/").pop() ?? d.label}
+                  label={d.sub ? `${d.label}, ${d.sub}` : d.label}
+                  color={color} loading={loading} onDownload={onDownload} size="sm"
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -378,25 +392,30 @@ function BrandCard({ brand }: { brand: Brand }) {
       <div className="h-3 w-full" style={{ background: brand.stripColor }} />
 
       {/* Price list row */}
-      <div className="px-4 pt-4 pb-3 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3 min-w-0">
+      <div className="px-4 pt-4 pb-3 flex flex-wrap items-center gap-x-3 gap-y-3">
+        <div className="flex items-center gap-3 flex-1 min-w-[8.5rem]">
           <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
             style={{ background: brand.iconBg }}>
             <IconPDF stroke={brand.color} />
           </div>
           <div className="min-w-0">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 leading-none mb-0.5">
-              Price List
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 leading-none mb-0.5 whitespace-nowrap">
+              {brand.priceFile ? "Price List" : "Brochure"}
             </p>
-            <h2 className="text-lg font-extrabold leading-tight truncate" style={{ color: brand.color }}>
+            <h2 className="text-lg font-extrabold leading-tight break-words" style={{ color: brand.color }}>
               {brand.brand}
             </h2>
           </div>
         </div>
-        <ActionButtons
-          file={brand.priceFile} filename={`${brand.id}-pricelist.pdf`}
-          color={brand.color} loading={loading} onDownload={download}
-        />
+        {brand.priceFile && (
+          <div className="ml-auto flex-shrink-0">
+            <ActionButtons
+              file={brand.priceFile} filename={`${brand.id}-pricelist.pdf`}
+              label={`${brand.brand} price list`}
+              color={brand.color} loading={loading} onDownload={download}
+            />
+          </div>
+        )}
       </div>
 
       {/* Brand-specific price lists */}
