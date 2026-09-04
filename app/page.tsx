@@ -11,10 +11,8 @@ interface Doc {
 }
 
 const promotions: Doc[] = [
-  { label: "Promotion 1", file: "/promotion/promo-1.jpeg" },
-  { label: "Promotion 2", file: "/promotion/promo-2.jpeg" },
-  { label: "Promotion 3", file: "/promotion/promo-3.jpeg" },
-  { label: "Promotion 4", file: "/promotion/promo-4.jpeg" },
+  { label: "Jetour T1 i-DM PHEV launch price", file: "/promotion/jetour1.jpeg" },
+  { label: "0% financing on Jetour X70 Plus & Dashing", file: "/promotion/jetour2.jpeg" },
 ];
 
 const PROMO_COLOR = "#dc2626";
