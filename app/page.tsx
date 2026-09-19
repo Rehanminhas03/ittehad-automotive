@@ -48,12 +48,12 @@ const brands: Brand[] = [
     stripColor: "#002C5F",
     iconBg: "#e8f0f8",
     brochures: [
-      { label: "Elantra Hybrid", file: "/hyundai/brochures/cn7.pdf" },
-      { label: "Sonata N-Line", file: "/hyundai/brochures/dn8-n-line.pdf" },
+      { label: "Elantra Hybrid", file: "/hyundai/brochures/elantra-hybrid.pdf" },
+      { label: "Sonata N-Line", file: "/hyundai/brochures/sonata-n-line.pdf" },
       { label: "Elantra 1.6 SP", file: "/hyundai/brochures/elantra-1.6-sp.pdf" },
       { label: "PALISADE 2026", file: "/hyundai/brochures/palisade-2026.pdf" },
       { label: "Porter", file: "/hyundai/brochures/porter.pdf" },
-      { label: "Santa Fe Hybrid", file: "/hyundai/brochures/santa-fe-tm.pdf" },
+      { label: "Santa Fe Hybrid", file: "/hyundai/brochures/santa-fe-hybrid.pdf" },
       { label: "Sonata 2.0", file: "/hyundai/brochures/sonata-2.0.pdf" },
     ],
     emiPlans: [
