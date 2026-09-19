@@ -81,7 +81,7 @@ const brands: Brand[] = [
     brochures: [
       { label: "Dashing", file: "/jetour/Jetour-Karachi-Dashing-Brochure.pdf" },
       { label: "X70 Plus", file: "/jetour/Jetour-X70-Plus-2025-PK.pdf" },
-      { label: "Jetour T1 Brochure", file: "/jetour/t1-folded-flyer.pdf" },
+      { label: "T1 Brochure", file: "/jetour/t1-folded-flyer.pdf" },
       { label: "T2 Brochure", file: "/jetour/Jetour_T2_Brochure_Enhanced.pdf" },
     ],
     emiPlans: [],
