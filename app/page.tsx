@@ -81,30 +81,8 @@ const brands: Brand[] = [
     brochures: [
       { label: "Dashing", file: "/jetour/Jetour-Karachi-Dashing-Brochure.pdf" },
       { label: "X70 Plus", file: "/jetour/Jetour-X70-Plus-2025-PK.pdf" },
-    ],
-    emiPlans: [],
-  },
-  {
-    id: "t1",
-    brand: "Jetour T1",
-    priceFile: "/jetour/t1-pricelist.pdf",
-    color: "#ea580c",
-    stripColor: "#ea580c",
-    iconBg: "#fff7ed",
-    brochures: [
-      { label: "T1 Folded Flyer", file: "/jetour/t1-folded-flyer.pdf" },
-    ],
-    emiPlans: [],
-  },
-  {
-    id: "t2-idm",
-    brand: "T2 i-DM PHEV",
-    priceFile: "/jetour/t2-idm.pdf",
-    color: "#7c3aed",
-    stripColor: "#7c3aed",
-    iconBg: "#f3f0ff",
-    brochures: [
-      { label: "T2 i-DM Brochure", file: "/jetour/Jetour_T2_Brochure_Enhanced.pdf" },
+      { label: "Jetour T1 Brochure", file: "/jetour/t1-folded-flyer.pdf" },
+      { label: "T2 Brochure", file: "/jetour/Jetour_T2_Brochure_Enhanced.pdf" },
     ],
     emiPlans: [],
   },
