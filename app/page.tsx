@@ -14,6 +14,7 @@ interface Doc {
 interface Brand {
   id: string;
   brand: string;
+  note?: string;
   priceFile?: string;
   color: string;
   stripColor: string;
@@ -26,7 +27,7 @@ interface Brand {
 const brands: Brand[] = [
   {
     id: "jetour",
-    brand: "Jetour",
+    brand: "Jetour Ittehad",
     priceFile: "/jetour/jetour-pricelist.pdf",
     color: "#111111",
     stripColor: "#111111",
@@ -41,7 +42,7 @@ const brands: Brand[] = [
   },
   {
     id: "hyundai",
-    brand: "Hyundai",
+    brand: "Hyundai Islamabad",
     priceFile: "/hyundai/hyundai-pricelist.pdf",
     color: "#002C5F",
     stripColor: "#002C5F",
@@ -66,7 +67,7 @@ const brands: Brand[] = [
   },
   {
     id: "csm",
-    brand: "CSM",
+    brand: "CSM Ittehad",
     priceFile: "/csm/csm-pricelist.pdf",
     color: "#1a1a1a",
     stripColor: "#4b5563",
@@ -82,17 +83,13 @@ const brands: Brand[] = [
   {
     id: "ppf",
     brand: "PPF",
+    note: "Valid across CSM, Hyundai & Jetour",
     priceFile: "/ppf/ppf.pdf",
     color: "#0f766e",
     stripColor: "#0f766e",
     iconBg: "#f0fdfa",
     brochures: [],
     emiPlans: [],
-    brandPriceLists: [
-      { label: "CSM", file: "/ppf/csm-ppf.pdf" },
-      { label: "Hyundai", file: "/ppf/hyundai-ppf.pdf" },
-      { label: "Jetour", file: "/ppf/jetour-ppf.pdf" },
-    ],
   },
 ];
 
@@ -293,6 +290,9 @@ function BrandCard({ brand }: { brand: Brand }) {
             <h2 className="text-lg font-extrabold leading-tight break-words" style={{ color: brand.color }}>
               {brand.brand}
             </h2>
+            {brand.note && (
+              <p className="text-[11px] text-gray-400 leading-tight mt-0.5">{brand.note}</p>
+            )}
           </div>
         </div>
         {brand.priceFile && (
