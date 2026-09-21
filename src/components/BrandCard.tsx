@@ -17,7 +17,7 @@ export function BrandCard({ brand, dark, openSections }: Props) {
 
   const cardCls = dark
     ? "rounded-2xl overflow-hidden shadow-md border border-gray-700 bg-gray-800"
-    : "rounded-2xl overflow-hidden shadow-md border border-gray-200 bg-white";
+    : "rounded-2xl overflow-hidden shadow-md border border-[#dbdee3] bg-white";
   const metaLabelCls = dark ? "text-gray-400" : "text-gray-400";
   const noteCls = dark ? "text-gray-400" : "text-gray-400";
 
