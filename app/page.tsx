@@ -52,6 +52,7 @@ const brands: Brand[] = [
       { label: "Sonata N-Line", file: "/hyundai/brochures/sonata-n-line.pdf" },
       { label: "Elantra 1.6", file: "/hyundai/brochures/elantra-1.6.pdf" },
       { label: "PALISADE 2026", file: "/hyundai/brochures/palisade-2026.pdf" },
+      { label: "Tucson", file: "/hyundai/brochures/tucson.pdf" },
       { label: "Porter", file: "/hyundai/brochures/porter.pdf" },
       { label: "Santa Fe Hybrid", file: "/hyundai/brochures/santa-fe-hybrid.pdf" },
       { label: "Sonata 2.0", file: "/hyundai/brochures/sonata-2.0.pdf" },
