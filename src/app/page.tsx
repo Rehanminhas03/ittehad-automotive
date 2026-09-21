@@ -45,7 +45,7 @@ export default function Home() {
   const toggleCls = dark ? "bg-gray-700 text-gray-200 hover:bg-gray-600" : "bg-gray-200 text-gray-600 hover:bg-gray-300";
   const searchCls = dark
     ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-gray-600"
-    : "bg-white border-gray-200 text-gray-700 placeholder-gray-400 focus:ring-gray-300";
+    : "bg-white border-gray-100 text-gray-700 placeholder-gray-400 focus:ring-gray-200";
   const searchIconCls = dark ? "text-gray-500" : "text-gray-400";
   const clearBtnCls = dark ? "text-gray-500 hover:text-gray-300" : "text-gray-400 hover:text-gray-600";
   const emptyStateCls = dark ? "text-gray-500" : "text-gray-400";
